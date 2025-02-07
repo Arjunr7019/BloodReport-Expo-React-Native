@@ -71,6 +71,9 @@ export default function Home() {
                     />
                 </View>
             </View>
+            <View style={[style.cardBackgroungColor, { paddingVertical: 40, marginTop: 10, borderRadius: 10, height:"60%" }]}>
+                <Text style={{color:"white"}}>graph section</Text>
+            </View>
         </View>
     )
 }
