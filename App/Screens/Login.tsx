@@ -1,9 +1,31 @@
 import { View, TextInput, Image, Text, TouchableOpacity, StyleSheet, Button } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
+import Services from '../Shared/Services';
+import { AuthContext } from '../Context/AuthContext';
 
 export default function Login() {
     const [login, setLogin] = useState(true);
     const [loginData, setLoginData] =useState({name:"",gender:"",email:"",password:""});
+    const userAuthContext:any = useContext(AuthContext);
+
+    const {setUserData} = userAuthContext;
+
+    const loginUser = async () => {
+        const response = await fetch('https://bloodreport-server.onrender.com/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginData)
+        });
+        if (response.status === 200) {
+            let data = await response.json();
+            await Services.setUserAuth(data)
+            setUserData(data)
+        } else {
+            // The user is not authenticated.
+        }
+    }
    
     return (
         <View style={style.container}>
@@ -16,7 +38,7 @@ export default function Login() {
                 <TextInput value={loginData.password} onChangeText={(text)=> setLoginData(val=>{return{...val,password:text}})} secureTextEntry style={style.inputForm} placeholder='Password' />
             </View>
             <TouchableOpacity>
-                <Text onPress={()=> console.log(loginData)} style={{ paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10, backgroundColor: "#616161", color: "white", fontSize: 24 }}>{login ? "Login" : "Sign Up"}</Text>
+                <Text onPress={()=> loginUser()} style={{ paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10, backgroundColor: "#616161", color: "white", fontSize: 24 }}>{login ? "Login" : "Sign Up"}</Text>
             </TouchableOpacity>
             <TouchableOpacity>
                 <Text onPress={() => login ? setLogin(false) : setLogin(true)} style={{ color: "white", marginTop: 10 }}>{login ? "Don't have an Account" : "Already have an Account"}</Text>
