@@ -3,20 +3,20 @@ import React, { useState } from 'react'
 
 export default function Login() {
     const [login, setLogin] = useState(true);
+    const [loginData, setLoginData] =useState({name:"",gender:"",email:"",password:""});
    
     return (
         <View style={style.container}>
             <Image style={{ marginBottom: 10, width: "60%", resizeMode: "contain" }} source={require("../Assets/bloodReport.png")} />
             <Text style={{ color: "white", fontSize: 35, fontWeight: "bold", marginBottom: 10 }}>{login ? "Login" : "Sign Up"}</Text>
             <View style={{ width: "100%", alignItems: "center" }}>
-                {login ? <></> : <TextInput style={style.inputForm} placeholder='Name' />}
-                {login ? <></> : <TextInput style={style.inputForm} placeholder='Gender' />}
-                <TextInput style={style.inputForm} placeholder='Email' />
-                
-                <TextInput secureTextEntry style={style.inputForm} placeholder='Password' />
+                {login ? <></> : <TextInput value={loginData.name} onChangeText={(text)=> setLoginData(val=>{return{...val,name:text}})} style={style.inputForm} placeholder='Name' />}
+                {login ? <></> : <TextInput value={loginData.gender} onChangeText={(text)=> setLoginData(val=>{return{...val,gender:text}})} style={style.inputForm} placeholder='Gender' />}
+                <TextInput value={loginData.email} onChangeText={(text)=> setLoginData(val=>{return{...val,email:text}})} style={style.inputForm} placeholder='Email' />
+                <TextInput value={loginData.password} onChangeText={(text)=> setLoginData(val=>{return{...val,password:text}})} secureTextEntry style={style.inputForm} placeholder='Password' />
             </View>
             <TouchableOpacity>
-                <Text style={{ paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10, backgroundColor: "#616161", color: "white", fontSize: 24 }}>{login ? "Login" : "Sign Up"}</Text>
+                <Text onPress={()=> console.log(loginData)} style={{ paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10, backgroundColor: "#616161", color: "white", fontSize: 24 }}>{login ? "Login" : "Sign Up"}</Text>
             </TouchableOpacity>
             <TouchableOpacity>
                 <Text onPress={() => login ? setLogin(false) : setLogin(true)} style={{ color: "white", marginTop: 10 }}>{login ? "Don't have an Account" : "Already have an Account"}</Text>
