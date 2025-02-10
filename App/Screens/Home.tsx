@@ -17,16 +17,15 @@ export default function Home() {
         { label: 'CRP', value: 'CRP' }
     ]);
 
-    const data = [
-        { value: 50, label: "Jan" },
-        { value: -30, label: "Feb" },
-        { value: 70, label: "Mar" },
-        { value: -40, label: "Apr" },
-        { value: 90, label: "May" },
-        { value: -20, label: "Jun" },
-    ];
-
-    // console.log(userData.data.user.name)
+    // const graphData:any = [{value:userData?.data.user.parameters.CRP.map((data)=> data.value)}] 
+    // const data = [
+    //     {
+    //         value:userData?.data.user.parameters.CRP.map((data:any)=> data.value),
+    //         label:userData?.data.user.parameters.CRP.map((data:any)=> data.date)
+    //     }
+    // ]
+    const data = userData?.data.user.parameters.CRP.map((data:any)=> ({value:data.value, label:data.date}))
+    console.log(data)
     return (
         <View style={{ flex: 1, justifyContent: "flex-start", flexDirection: "column", height: "100%", width: "100%", paddingVertical: 40, paddingHorizontal: 20 }}>
             <View style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row", width: "100%" }}>
@@ -80,7 +79,7 @@ export default function Home() {
                 {/* <Text style={{color:"white"}}>graph section</Text> */}
                 <LineChartBicolor
                     width={Dimensions.get("window").width - 110}
-                    data={data}
+                    data={userData?.data.user.parameters.CRP.map((data:any)=> ({value:data.value, label:data.date}))}
                     areaChart
                     color="green"
                     colorNegative="red"
