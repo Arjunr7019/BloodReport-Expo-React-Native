@@ -1,20 +1,15 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, StyleSheet,Dimensions } from 'react-native'
+import React, { useContext, useState } from 'react'
 import Feather from '@expo/vector-icons/Feather';
-// import { useFonts } from 'expo-font';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { AuthContext } from '../Context/AuthContext';
+import { LineChartBicolor } from "react-native-gifted-charts";
 
 export default function Home() {
-    // const [loaded, error] = useFonts({
-    //     'Ubuntu-Regular': require('../../assets/fonts/Ubuntu-Regular.ttf'),
-    //   });
-
-    //   if(!loaded){
-    //     console.log(loaded)
-    //   }
-
+    const userAuthContext: any = useContext(AuthContext)
+    const { userData } = userAuthContext;
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState("ESR");
     const [items, setItems] = useState([
@@ -22,6 +17,16 @@ export default function Home() {
         { label: 'CRP', value: 'CRP' }
     ]);
 
+    const data = [
+        { value: 50, label: "Jan" },
+        { value: -30, label: "Feb" },
+        { value: 70, label: "Mar" },
+        { value: -40, label: "Apr" },
+        { value: 90, label: "May" },
+        { value: -20, label: "Jun" },
+    ];
+
+    // console.log(userData.data.user.name)
     return (
         <View style={{ flex: 1, justifyContent: "flex-start", flexDirection: "column", height: "100%", width: "100%", paddingVertical: 40, paddingHorizontal: 20 }}>
             <View style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row", width: "100%" }}>
@@ -29,7 +34,7 @@ export default function Home() {
                     <Feather name="menu" size={30} color="white" />
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={{ color: "white", paddingRight: 6, fontSize: 16 }}>UserName</Text>
+                    <Text style={{ color: "white", paddingRight: 6, fontSize: 16 }}>{userData?.data.user.name}</Text>
                     <View style={{ backgroundColor: "#616161", borderRadius: 50, padding: 6 }}>
                         <Feather name="user" size={30} color="white" />
                     </View>
@@ -38,10 +43,10 @@ export default function Home() {
             <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>Dashboard</Text>
             <View style={{ flexDirection: "row" }}>
                 <View style={style.dateTextCard}>
-                    <Text style={[style.textColor, { fontSize: 16 }]}>Last Test: Feb 12,2024</Text>
+                    <Text style={[style.textColor, { paddingHorizontal: 4, fontSize: 16 }]}>{`Last Test: ${userData?.data.user.lastUpdateDate}`}</Text>
                 </View>
                 <View style={style.dateTextCard}>
-                    <Text style={[style.textColor, { fontSize: 16 }]}>Joined: Feb 12,2024</Text>
+                    <Text style={[style.textColor, { paddingHorizontal: 4, fontSize: 16 }]}>{`Joined: ${userData?.data.user.joinedDate}`}</Text>
                 </View>
             </View>
             <View style={[style.cardBackgroungColor, { paddingVertical: 40, marginTop: 10, borderRadius: 10 }]}>
@@ -55,12 +60,12 @@ export default function Home() {
                 </select> */}
                 <View style={style.dropdown}>
                     <DropDownPicker
-                    style={[style.cardBackgroungColor,{borderColor:"#616161"}]}
-                    dropDownContainerStyle={[style.cardBackgroungColor,{borderColor:"#616161"}]}
-                    textStyle={style.textColor}
-                    ArrowDownIconComponent={() => <Entypo name="chevron-small-down" size={24} color="white" />}
-                    ArrowUpIconComponent={() => <Entypo name="chevron-small-up" size={24} color="white" />}
-                    TickIconComponent={() => <MaterialCommunityIcons name="check" size={24} color="white" />}
+                        style={[style.cardBackgroungColor, { borderColor: "#616161" }]}
+                        dropDownContainerStyle={[style.cardBackgroungColor, { borderColor: "#616161" }]}
+                        textStyle={style.textColor}
+                        ArrowDownIconComponent={() => <Entypo name="chevron-small-down" size={24} color="white" />}
+                        ArrowUpIconComponent={() => <Entypo name="chevron-small-up" size={24} color="white" />}
+                        TickIconComponent={() => <MaterialCommunityIcons name="check" size={24} color="white" />}
                         open={open}
                         value={value}
                         items={items}
@@ -71,8 +76,20 @@ export default function Home() {
                     />
                 </View>
             </View>
-            <View style={[style.cardBackgroungColor, { paddingVertical: 40, marginTop: 10, borderRadius: 10, height:"60%" }]}>
-                <Text style={{color:"white"}}>graph section</Text>
+            <View style={[style.cardBackgroungColor, { paddingVertical: 40, marginTop: 10, borderRadius: 10, height: "58%" }]}>
+                {/* <Text style={{color:"white"}}>graph section</Text> */}
+                <LineChartBicolor
+                    width={Dimensions.get("window").width - 110}
+                    data={data}
+                    areaChart
+                    color="green"
+                    colorNegative="red"
+                    startFillColor="green"
+                    startFillColorNegative="red"
+                    yAxisTextStyle={{ color: "white", fontSize: 14 }} // Orange Y-axis labels
+                    xAxisLabelTextStyle={{ color: "white", fontSize: 14 }} // Blue X-axis labels
+                    curved
+                />
             </View>
         </View>
     )

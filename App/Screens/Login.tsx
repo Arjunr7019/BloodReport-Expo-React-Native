@@ -21,7 +21,7 @@ export default function Login() {
         if (response.status === 200) {
             let data = await response.json();
             await Services.setUserAuth(data)
-            setUserData(data)
+            setUserData(data);
         } else {
             // The user is not authenticated.
         }
