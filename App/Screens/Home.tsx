@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet,Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import React, { useContext, useState } from 'react'
 import Feather from '@expo/vector-icons/Feather';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../Context/AuthContext';
-import { LineChartBicolor } from "react-native-gifted-charts";
+import { BarChart } from "react-native-gifted-charts";
 
 export default function Home() {
     const userAuthContext: any = useContext(AuthContext)
@@ -17,15 +17,11 @@ export default function Home() {
         { label: 'CRP', value: 'CRP' }
     ]);
 
-    // const graphData:any = [{value:userData?.data.user.parameters.CRP.map((data)=> data.value)}] 
-    // const data = [
-    //     {
-    //         value:userData?.data.user.parameters.CRP.map((data:any)=> data.value),
-    //         label:userData?.data.user.parameters.CRP.map((data:any)=> data.date)
-    //     }
-    // ]
-    const data = userData?.data.user.parameters.CRP.map((data:any)=> ({value:data.value, label:data.date}))
-    console.log(data)
+    const data = userData?.data?.user?.parameters?.[value]?.map((data: any) => ({
+        value: Number(data.value) || 0,  // Ensure value is a valid number
+        label: data.date
+    })) || [];
+    // console.log(userData?.data?.user?.parameters?.BP)
     return (
         <View style={{ flex: 1, justifyContent: "flex-start", flexDirection: "column", height: "100%", width: "100%", paddingVertical: 40, paddingHorizontal: 20 }}>
             <View style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row", width: "100%" }}>
@@ -59,8 +55,8 @@ export default function Home() {
                 </select> */}
                 <View style={style.dropdown}>
                     <DropDownPicker
-                        style={[style.cardBackgroungColor, { borderColor: "#616161" }]}
-                        dropDownContainerStyle={[style.cardBackgroungColor, { borderColor: "#616161" }]}
+                        style={[style.cardBackgroungColor, { borderWidth: 1, borderColor: "#808080" }]}
+                        dropDownContainerStyle={[style.cardBackgroungColor, { borderWidth: 1, borderColor: "#808080" }]}
                         textStyle={style.textColor}
                         ArrowDownIconComponent={() => <Entypo name="chevron-small-down" size={24} color="white" />}
                         ArrowUpIconComponent={() => <Entypo name="chevron-small-up" size={24} color="white" />}
@@ -76,18 +72,20 @@ export default function Home() {
                 </View>
             </View>
             <View style={[style.cardBackgroungColor, { paddingVertical: 40, marginTop: 10, borderRadius: 10, height: "58%" }]}>
-                {/* <Text style={{color:"white"}}>graph section</Text> */}
-                <LineChartBicolor
+                
+                <BarChart
                     width={Dimensions.get("window").width - 110}
-                    data={userData?.data.user.parameters.CRP.map((data:any)=> ({value:data.value, label:data.date}))}
-                    areaChart
-                    color="green"
-                    colorNegative="red"
-                    startFillColor="green"
-                    startFillColorNegative="red"
+                    data={data}
+                    barWidth={35}
+                    cappedBars
+                    capColor={'rgba(78, 0, 142)'}
+                    capThickness={4}
+                    showGradient
+                    gradientColor={'white'}
+                    frontColor={'rgba(162, 162, 162, 0.2)'}
                     yAxisTextStyle={{ color: "white", fontSize: 14 }} // Orange Y-axis labels
                     xAxisLabelTextStyle={{ color: "white", fontSize: 14 }} // Blue X-axis labels
-                    curved
+                    isAnimated
                 />
             </View>
         </View>
