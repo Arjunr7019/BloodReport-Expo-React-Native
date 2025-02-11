@@ -14,7 +14,9 @@ export default function Home() {
     const [value, setValue] = useState("ESR");
     const [items, setItems] = useState([
         { label: 'ESR', value: 'ESR' },
-        { label: 'CRP', value: 'CRP' }
+        { label: 'CRP', value: 'CRP' },
+        { label: 'BP', value: 'BP' },
+        { label: 'Glc', value: 'Glc' }
     ]);
 
     const data = userData?.data?.user?.parameters?.[value]?.map((data: any) => ({
@@ -35,7 +37,7 @@ export default function Home() {
                     </View>
                 </View>
             </View>
-            <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>Dashboard</Text>
+            <Text style={{ color: "white", fontSize: 30, fontWeight: "bold",marginBottom:10 }}>Dashboard</Text>
             <View style={{ flexDirection: "row" }}>
                 <View style={style.dateTextCard}>
                     <Text style={[style.textColor, { paddingHorizontal: 4, fontSize: 16 }]}>{`Last Test: ${userData?.data.user.lastUpdateDate}`}</Text>
